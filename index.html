@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>data and apis</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+     integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+     crossorigin=""/>
+     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+     integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+     crossorigin=""></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.0.1/dist/chart.umd.min.js"></script>
+    <style>
+        #map {height: 180px}
+    </style>
+</head>
+<body>
+    <!-- <img src="" id="rainbow" width="400" alt="" srcset="">
+    <img src="" id="image2" alt="" srcset="">
+    <p id="text"></p> -->
+    <!-- <canvas id="chart" width="400" height="400"></canvas> -->
+    <h1>Where the ISS?</h1>
+    <p>latitude: <span id="lat"></span>
+       longitude: <span id="long"></span>
+    </p>
+    <div id="map">
+
+    </div>
+    <script>
+        // console.log("About to fetch a rainbow")
+        // let catchCustard = async ()=>{
+        //     const response = await fetch("fruit-custard.jpg");
+        //     const blob = await response.blob();
+        //     document.getElementById('rainbow').src = URL.createObjectURL(blob);
+        //     const image2 = await fetch('childeating.jpg');
+        //     const blob2 = await image2.blob();
+        //     document.getElementById('image2').src = URL.createObjectURL(blob2);
+        // }
+        // catchCustard().catch(error => {
+        //   console.error(error);
+        //   console.log("error");
+        // })
+//         const xlabels = [];
+//         const ylabels = []
+//         let getData = async () =>{
+//             let response = await fetch("ZonAnn.Ts+dSST.csv");
+//             let data = await response.text();
+//             let table = data.split("\n").slice(1);
+//             table.forEach(row =>{
+//                 const column = row.split(',');
+//                 const year = column[0];
+//                 xlabels.push(year)
+//                 const temp = column[1];
+//                 ylabels.push(parseFloat(temp) + 14)
+//                 console.log(year, temp)
+//             })
+            
+//         }
+//         async function chartIt(){
+//             await getData();
+//          const ctx = document.getElementById("chart")
+//          new Chart(ctx, {
+//          type: 'line',
+//          data: {
+//          backGroundColor: "Red",
+//          labels: xlabels,
+//          datasets: [{
+//          label: 'Combined Land-Surface Air and Sea-Surface Water Temperature in °C',
+//          data: ylabels,
+//          borderWidth: 1
+//          }]
+//         },
+//         options: {
+//         scales: {
+//             y: {
+//                 ticks: {
+//                     // Include a dollar sign in the ticks
+//                     callback: function(value, index, ticks) {
+//                         return value + '°C';
+//                     }
+//                 }
+//             }
+//         }
+//     }
+//     }
+//          )
+     
+//     }
+  
+// chartIt()        
+       let pos  = {
+        lon: -45,
+        lat: 112
+       }
+       var map = L.map('map').setView([0, 0], 1);
+       const issIcon = L.icon({
+          iconUrl:"issicon.png",
+          iconSize: [50, 32],
+          iconAnchor: [25, 16]
+       })
+       let marker = L.marker([0, 0], {icon: issIcon}).addTo(map);
+       L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+         maxZoom: 19,
+         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+       }).addTo(map);
+        let api_url = "https://api.wheretheiss.at/v1/satellites/25544"
+        let getIss = async () =>{
+        let response = await fetch(api_url);
+        let issData = await response.json();
+        const {latitude, longitude} = issData;
+        // L.marker([latitude, longitude]).addTo(map);
+        marker.setLatLng([latitude, longitude])
+        document.getElementById("lat").innerText = latitude;
+        document.getElementById("long").innerText = longitude;
+       }
+       getIss();
+       setInterval(getIss, 1000);
+    </script>
+</body>
+</html>
