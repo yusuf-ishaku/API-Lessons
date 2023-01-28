@@ -105,18 +105,41 @@
          maxZoom: 19,
          attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
        }).addTo(map);
-        let api_url = "https://api.wheretheiss.at/v1/satellites/25544"
-        let getIss = async () =>{
-        let response = await fetch(api_url);
-        let issData = await response.json();
-        const {latitude, longitude} = issData;
+        let api_url = "https://api.wheretheiss.at/v1/satellites/25544";
+        let getIss = () =>{
+        // let response = await fetch(api_url);
+        // let issData = await response.json();
+        // console.log(issData);
+           
+        if ('geolocation' in navigator) {
+            console.log("geolocation available");
+            const options = {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: 0
+            };
+            function error(err) {
+                console.warn(`ERROR(${err.code}): ${err.message}`);
+            }
+            navigator.geolocation.getCurrentPosition((position) => {
+                console.log(position);
+                const  latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
+                marker.setLatLng([latitude, longitude])
+                document.getElementById("lat").innerText = latitude;
+                document.getElementById("long").innerText = longitude;
+            }, error, options);
+
+        } else {
+            console.log("geolocation not available")
+        }
+
+        
         // L.marker([latitude, longitude]).addTo(map);
-        marker.setLatLng([latitude, longitude])
-        document.getElementById("lat").innerText = latitude;
-        document.getElementById("long").innerText = longitude;
+    
        }
        getIss();
-       setInterval(getIss, 1000);
+    //    setInterval(getIss, 1000);
     </script>
 </body>
 </html>
