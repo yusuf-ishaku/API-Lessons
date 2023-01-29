@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
      integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
      crossorigin=""/>
+     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
      <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
      integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
      crossorigin=""></script>
@@ -21,7 +22,7 @@
     <img src="" id="image2" alt="" srcset="">
     <p id="text"></p> -->
     <!-- <canvas id="chart" width="400" height="400"></canvas> -->
-    <h1>Where the ISS?</h1>
+    <h1>Where am I at?</h1>
     <p>latitude: <span id="lat"></span>
        longitude: <span id="long"></span>
     </p>
@@ -141,5 +142,10 @@
        getIss();
     //    setInterval(getIss, 1000);
     </script>
+    <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg&callback=initMap&v=weekly"
+    defer
+  ></script>
+    <script src="map.js"></script>
 </body>
 </html>
